@@ -91,8 +91,18 @@ const Home = () => {
           {cardCollection}
 
           <br />
-          <button onClick={handleSignout}>Sign Out</button>
-          <button onClick={handleSessionOut}>Exit Session</button>
+          <button
+            onClick={handleSignout}
+            className="bg-slate-800 font-semibold text-white rounded-md gap-3"
+          >
+            Sign Out
+          </button>
+          <button
+            onClick={handleSessionOut}
+            className="bg-slate-500 font-semibold text-white rounded-md gap-3"
+          >
+            Exit Session
+          </button>
 
           <div>
             <Results availabilityData={availabilityData} />

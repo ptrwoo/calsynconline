@@ -51,15 +51,15 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
 
   return (
     <div>
-      <h2> {cardDate} </h2>
+      <h2 className="font-extrabold text-white bg-slate-600"> {cardDate} </h2>
 
-      <p>Morning</p>
+      <p className="font-extrabold text-gray-400">Morning</p>
       {renderButton(cardDate + " morning")}
 
-      <p>Afternoon</p>
+      <p className="font-extrabold  text-gray-400">Afternoon</p>
       {renderButton(cardDate + " Afternoon")}
 
-      <p>Evening</p>
+      <p className="font-extrabold  text-gray-400">Evening</p>
       {renderButton(cardDate + " evening")}
     </div>
   );

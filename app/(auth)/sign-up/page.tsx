@@ -8,7 +8,7 @@ interface SignUpProps {
     sessionId: string,
     sessionName: string,
     startDate: string,
-    endDate: string,
+    endDate: string
   ) => void;
 }
 
@@ -29,8 +29,11 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp }) => {
   };
   return (
     <div>
-      <h1>New Session?</h1>
+      <h1 className="font-extrabold border-l-orange-200 bg-green-900 text-white flex justify-center">
+        New Session?
+      </h1>
       <input
+        className="flex justify-center"
         type="text"
         placeholder="Enter name of Session"
         value={sessionName}
