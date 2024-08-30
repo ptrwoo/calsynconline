@@ -31,23 +31,17 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
   const renderButton = (timeSlot: string) => (
     <>
       <button
-        style={{
-          backgroundColor:
-            responses[timeSlot] === "available"
-              ? "bg-green-500"
-              : "bg-gray-300",
-        }}
+        className={`${
+          responses[timeSlot] === "available" ? "bg-green-500" : "bg-gray-300"
+        } px-4 py-2 m-1 text-white rounded`}
         onClick={() => handleClick(timeSlot, "available")}
       >
         Available
       </button>
       <button
-        style={{
-          backgroundColor:
-            responses[timeSlot] === "unavailable"
-              ? "bg-red-500"
-              : "bg-gray-300",
-        }}
+        className={`${
+          responses[timeSlot] === "unavailable" ? "bg-red-500" : "bg-gray-300"
+        } px-4 py-2 m-1 text-white rounded`}
         onClick={() => handleClick(timeSlot, "unavailable")}
       >
         Unavailable
