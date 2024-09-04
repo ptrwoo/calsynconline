@@ -26,6 +26,8 @@ const Home = () => {
   }>({});
   const [filteredDates, setFilteredDates] = useState<string[]>([]);
 
+  const [pressed, setPressed] = useState<boolean>(false);
+
   useEffect(() => {
     const { userId, name } = getCurrentUser();
     const { sessionId } = getSessionId();
@@ -92,13 +94,20 @@ const Home = () => {
     );
   });
 
+  const handleResultButton = () => {
+    setPressed(!pressed);
+  };
+
   return (
     <>
       {!sessionId ? (
         <SignUp onSignUp={handleSessionIn} />
       ) : userId && sessionId ? (
         <div>
-          <h1 className="font-extrabold text-3xl"> r u free? </h1>
+          <h1 className="font-extrabold text-3xl">
+            {" "}
+            Welcome {name}, free for {sessionName}?
+          </h1>
           {cardCollection}
 
           <br />
@@ -114,9 +123,17 @@ const Home = () => {
           >
             Exit Session
           </button>
+          <br />
+          <br />
 
           <div>
-            <Results sessionId={sessionId} />
+            <button
+              onClick={handleResultButton}
+              className="border-solid text-md border-4 bg-yellow-200 font-semibold text-black rounded-2xl gap-3"
+            >
+              refresh results
+            </button>
+            <Results sessionId={sessionId} trigger={pressed} />
           </div>
         </div>
       ) : (
