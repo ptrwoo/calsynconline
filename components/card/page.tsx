@@ -10,6 +10,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
   const [responses, setResponses] = useState<{ [key: string]: string }>({});
   const userId = localStorage.getItem("userId");
+  const sessionId = localStorage.getItem("sessionId");
 
   const handleClick = (timeSlot: string, status: string) => {
     const updatedResponses = { ...responses, [timeSlot]: status };
@@ -20,13 +21,13 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
   };
 
   useEffect(() => {
-    if (userId) {
-      const savedResponses = getResponses(userId);
+    if (userId && sessionId) {
+      const savedResponses = getResponses();
       if (savedResponses) {
         setResponses(savedResponses);
       }
     }
-  }, [userId]);
+  }, [userId, sessionId]);
 
   const renderButton = (timeSlot: string) => (
     <>
@@ -51,15 +52,18 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
 
   return (
     <div>
-      <h2 className="font-extrabold text-white bg-slate-600"> {cardDate} </h2>
+      <h2 className="text-xl font-extrabold text-white bg-slate-600 border-solid">
+        {" "}
+        {cardDate}{" "}
+      </h2>
 
-      <p className="font-extrabold text-gray-400">Morning</p>
+      <p className="text-xl font-extrabold text-gray-400">Morning</p>
       {renderButton(cardDate + " morning")}
 
-      <p className="font-extrabold  text-gray-400">Afternoon</p>
+      <p className="text-xl font-extrabold  text-gray-400">Afternoon</p>
       {renderButton(cardDate + " Afternoon")}
 
-      <p className="font-extrabold  text-gray-400">Evening</p>
+      <p className="text-xl font-extrabold  text-gray-400">Evening</p>
       {renderButton(cardDate + " evening")}
     </div>
   );

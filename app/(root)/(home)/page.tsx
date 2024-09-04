@@ -8,6 +8,7 @@ import {
   getCurrentUser,
   getSessionId,
   sessionOut,
+  getSessionName,
 } from "@/utils/authService";
 import { aggregateResponses } from "@/utils/aggregateResponses";
 import { getSessionDates } from "@/utils/datehelper";
@@ -25,34 +26,42 @@ const Home = () => {
   }>({});
   const [filteredDates, setFilteredDates] = useState<string[]>([]);
 
-  const sessionDates = getSessionDates();
-  const startDate = sessionDates[0];
-  const endDate = sessionDates[1];
-
   useEffect(() => {
     const { userId, name } = getCurrentUser();
-    const { sessionId, sessionName } = getSessionId();
-    if (userId && name) {
-      setUserId(userId);
-      setName(name);
-    }
-    if (sessionId && sessionName) {
-      setSessionId(sessionId);
-      setSessionName(sessionName);
-    }
+    const { sessionId } = getSessionId();
+    const { sessionName } = getSessionName();
+    if (userId) setUserId(userId);
+    if (name) setName(name);
+    if (sessionId) setSessionId(sessionId);
+    if (sessionName) setSessionName(sessionName);
+
+    // if (sessionId) {
+    //   const dates = getSessionDates();
+    //   console.log(dates + "these are dates");
+    //   setFilteredDates(dates);
+    // }
   }, []);
 
   useEffect(() => {
-    const dates = getSessionDates();
-    setFilteredDates(dates);
-  }, [startDate, endDate]);
+    if (sessionId) {
+      const dates = getSessionDates();
+      setFilteredDates(dates);
+    }
+  }, [sessionId]);
+
+  // useEffect(() => {
+  //   if (sessionId) {
+  //     const aggregateData = aggregateResponses(sessionId);
+  //     setAvailabilityData(aggregateData);
+  //   }
+  // }, [sessionId]);
 
   const handleSignIn = (userId: string, name: string) => {
     setUserId(userId);
     setName(name);
   };
 
-  const handleSessionIn = (sessionId: string, sessionName: string) => {
+  const handleSessionIn = (sessionId: string | null, sessionName: string) => {
     setSessionId(sessionId);
     setSessionName(sessionName);
   };
@@ -71,8 +80,10 @@ const Home = () => {
   };
 
   const handleResponseChange = () => {
-    const aggregateData = aggregateResponses();
-    setAvailabilityData(aggregateData);
+    if (sessionId) {
+      const aggregateData = aggregateResponses(sessionId);
+      setAvailabilityData(aggregateData);
+    }
   };
 
   const cardCollection = filteredDates.map((x) => {
@@ -87,25 +98,25 @@ const Home = () => {
         <SignUp onSignUp={handleSessionIn} />
       ) : userId && sessionId ? (
         <div>
-          <h1> r u free? </h1>
+          <h1 className="font-extrabold text-3xl"> r u free? </h1>
           {cardCollection}
 
           <br />
           <button
             onClick={handleSignout}
-            className="bg-slate-800 font-semibold text-white rounded-md gap-3"
+            className="border-solid text-xl border-4 bg-slate-800 font-semibold text-white rounded-2xl gap-3"
           >
             Sign Out
           </button>
           <button
             onClick={handleSessionOut}
-            className="bg-slate-500 font-semibold text-white rounded-md gap-3"
+            className="border-solid text-xl border-4 bg-slate-500 font-semibold text-white rounded-2xl gap-3"
           >
             Exit Session
           </button>
 
           <div>
-            <Results availabilityData={availabilityData} />
+            <Results sessionId={sessionId} />
           </div>
         </div>
       ) : (

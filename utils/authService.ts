@@ -34,14 +34,10 @@ export const sessionOut = () => {
 };
 
 export const sessionIn = (
-  sessionName: string,
-): { sessionId: string; sessionName: string } => {
-  let sessionId = localStorage.getItem("sessionId");
-
-  if (!sessionId) {
-    sessionId = uuidv4();
-    localStorage.setItem("sessionId", sessionId);
-  }
+  sessionName: string
+): { sessionId: string | null; sessionName: string } => {
+  const sessionId = uuidv4();
+  localStorage.setItem("sessionId", sessionId);
 
   localStorage.setItem("sessionName", sessionName);
 
@@ -50,9 +46,16 @@ export const sessionIn = (
 
 export const getSessionId = (): {
   sessionId: string | null;
-  sessionName: string | null;
 } => {
   const sessionId = localStorage.getItem("sessionId");
+
+  return { sessionId };
+};
+
+export const getSessionName = (): {
+  sessionName: string | null;
+} => {
   const sessionName = localStorage.getItem("sessionName");
-  return { sessionId, sessionName };
+
+  return { sessionName };
 };

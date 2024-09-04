@@ -5,7 +5,7 @@ import { saveSessionDates } from "@/utils/datehelper";
 
 interface SignUpProps {
   onSignUp: (
-    sessionId: string,
+    sessionId: string | null,
     sessionName: string,
     startDate: string,
     endDate: string
@@ -29,11 +29,11 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp }) => {
   };
   return (
     <div>
-      <h1 className="font-extrabold border-l-orange-200 bg-green-900 text-white flex justify-center">
+      <h1 className="text-4xl font-extrabold border-l-orange-200 bg-green-900 text-white flex justify-center">
         New Session?
       </h1>
       <input
-        className="flex justify-center"
+        className="flex-auto justify-center"
         type="text"
         placeholder="Enter name of Session"
         value={sessionName}
