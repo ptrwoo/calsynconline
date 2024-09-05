@@ -29,11 +29,11 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp }) => {
   };
   return (
     <div>
-      <h1 className="text-4xl font-extrabold border-l-orange-200 bg-green-900 text-white flex justify-center">
+      <h1 className="text-4xl font-extrabold border-l-orange-200 bg-orange-900 text-white flex justify-center">
         New Session?
       </h1>
       <input
-        className="flex-auto justify-center"
+        className="flex-auto justify-center size-max"
         type="text"
         placeholder="Enter name of Session"
         value={sessionName}
@@ -51,7 +51,12 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp }) => {
         onChange={(e) => setEndDate(e.target.value)}
       />
       <br /> <br />
-      <button onClick={handleSignIn}>Create Session</button>
+      <button
+        onClick={handleSignIn}
+        className="px-4 py-2 m-1 bg-orange-400 text-white rounded"
+      >
+        Create Session
+      </button>
       <br />
       <br />
     </div>

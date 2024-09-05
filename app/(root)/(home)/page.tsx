@@ -13,6 +13,7 @@ import {
 import { aggregateResponses } from "@/utils/aggregateResponses";
 import { getSessionDates } from "@/utils/datehelper";
 import SignUp from "@/app/(auth)/sign-up/page";
+import SessionPicker from "@/app/(auth)/sessionPick/page";
 
 const Home = () => {
   const [userId, setUserId] = useState<string | null>(null);
@@ -98,6 +99,10 @@ const Home = () => {
     setPressed(!pressed);
   };
 
+  // const handleSessionChoose = () => {
+  //   <SessionPicker onSelectSession={sessionId} />;
+  // };
+
   return (
     <>
       {!sessionId ? (
@@ -106,7 +111,7 @@ const Home = () => {
         <div>
           <h1 className="font-extrabold text-3xl">
             {" "}
-            Welcome {name}, free for {sessionName}?
+            {name}, free for "{sessionName}"?
           </h1>
           {cardCollection}
 
@@ -123,6 +128,13 @@ const Home = () => {
           >
             Exit Session
           </button>
+          <br />
+          {/* <button
+            onClick={handleSessionChoose}
+            className="border-solid text-md border-4 bg-orange-200 font-bold text-white rounded-2xl gap-3"
+          >
+            Choose Session
+          </button> */}
           <br />
           <br />
 

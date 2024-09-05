@@ -38,10 +38,20 @@ export const sessionIn = (
 ): { sessionId: string | null; sessionName: string } => {
   const sessionId = uuidv4();
   localStorage.setItem("sessionId", sessionId);
-
   localStorage.setItem("sessionName", sessionName);
 
+  const keyPair = [{ [sessionId]: sessionName }];
+  localStorage.setItem("sessionKeys", JSON.stringify(keyPair));
+
   return { sessionId, sessionName };
+};
+
+export const sessionRetrieve = (): {
+  sessionId: string;
+  sessionName: string;
+}[] => {
+  const sessionKeys = JSON.parse(localStorage.getItem("sessionKeys") || "[]");
+  return sessionKeys; // Return the array of session keys and session names
 };
 
 export const getSessionId = (): {

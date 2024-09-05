@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signIn } from "@/utils/authService";
+import { getSessionName, signIn } from "@/utils/authService";
 
 interface SignInProps {
   onSignIn: (userId: string, name: string) => void;
@@ -15,9 +15,11 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
     onSignIn(userId, savedName);
   };
 
+  const sessionName = Object.values(getSessionName())[0];
+
   return (
     <div>
-      <h1>Sign In</h1>
+      <h1>Sign In for {sessionName}</h1>
       <input
         type="text"
         placeholder="Enter your name"

@@ -17,9 +17,8 @@ const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
   const [availabilityData, setAvailabilityData] = useState<{
     [date: string]: availabilityData;
   }>({});
-  const sessionNameGet = getSessionName();
-  const sessionName = Object.values(sessionNameGet)[0];
-  console.log(sessionName + "this is sessionName");
+  const sessionName = Object.values(getSessionName())[0];
+  // console.log(sessionName + "this is sessionName");
 
   useEffect(() => {
     try {
@@ -33,13 +32,15 @@ const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold">Results for "{sessionName}"</h3>
+      <h3 className="text-xl font-extrabold bg-slate-50 text-black font-mono">
+        Results for "{sessionName}"
+      </h3>
       {Object.keys(availabilityData).length > 0 ? (
-        <ul>
+        <ul className="font-bold">
           {Object.entries(availabilityData).map(([date, { count, names }]) => (
-            <li key={date}>
+            <li className="font-mono text-gray-600" key={date}>
               {date}: {count} available
-              <ul>
+              <ul className="font-thin">
                 {names.map((name, index) => (
                   <li key={index}>- {name}</li>
                 ))}
