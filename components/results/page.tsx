@@ -1,55 +1,70 @@
-"use client";
-import { aggregateResponses } from "@/utils/aggregateResponses";
-import { getSessionName } from "@/utils/authService";
-import React, { useEffect, useState } from "react";
-
-interface availabilityData {
-  count: number;
-  names: string[];
-}
+// "use client";
+// import { aggregateResponses } from "@/utils/aggregateResponses";
+// import { getSessionName } from "@/utils/authService";
+// import React, { useEffect, useState } from "react";
+// import React from "react";
 
 interface ResultsProps {
-  sessionId: string;
-  trigger: boolean;
+  availabilityData: {
+    [date: string]: {
+      count: number;
+      timeslots: {
+        morning: string[];
+        afternoon: string[];
+        evening: string[];
+      };
+    };
+  };
 }
 
-const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
-  const [availabilityData, setAvailabilityData] = useState<{
-    [date: string]: availabilityData;
-  }>({});
-  const sessionName = Object.values(getSessionName())[0];
-  // console.log(sessionName + "this is sessionName");
-
-  useEffect(() => {
-    try {
-      const aggregateData = aggregateResponses(sessionId);
-      setAvailabilityData(aggregateData);
-      console.log(availabilityData + "data pre-result");
-    } catch (error) {
-      console.error("Error fetching availability data:", error);
-    }
-  }, [trigger]);
-
+const Results: React.FC<ResultsProps> = ({ availabilityData }) => {
   return (
     <div>
-      <h3 className="text-xl font-extrabold bg-slate-50 text-black font-mono">
-        Results for "{sessionName}"
-      </h3>
+      <h3>Availability Results</h3>
       {Object.keys(availabilityData).length > 0 ? (
-        <ul className="font-bold">
-          {Object.entries(availabilityData).map(([date, { count, names }]) => (
-            <li className="font-mono text-gray-600" key={date}>
-              {date}: {count} available
-              <ul className="font-thin">
-                {names.map((name, index) => (
-                  <li key={index}>- {name}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
+        <ul>
+          {Object.entries(availabilityData).map(
+            ([date, { count, timeslots }]) => (
+              <li key={date}>
+                <strong>
+                  {date} - {count} available:
+                </strong>
+                {timeslots.morning.length > 0 && (
+                  <div>
+                    <strong>Morning:</strong>
+                    <ul>
+                      {timeslots.morning.map((name, index) => (
+                        <li key={index}>- {name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {timeslots.afternoon.length > 0 && (
+                  <div>
+                    <strong>Afternoon:</strong>
+                    <ul>
+                      {timeslots.afternoon.map((name, index) => (
+                        <li key={index}>- {name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {timeslots.evening.length > 0 && (
+                  <div>
+                    <strong>Evening:</strong>
+                    <ul>
+                      {timeslots.evening.map((name, index) => (
+                        <li key={index}>- {name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </li>
+            )
+          )}
         </ul>
       ) : (
-        <p> No availability data found </p>
+        <p>No availability data found</p>
       )}
     </div>
   );

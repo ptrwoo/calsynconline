@@ -1,6 +1,6 @@
 import { getSessionId, getSessionName } from "./authService";
 
-export const saveResponses = (newResponses: { [key: string]: string }) => {
+export const saveResponses = (newResponses: { [key: string]: string[] }) => {
   const userId = localStorage.getItem("userId");
   const name = localStorage.getItem("userName");
   const sessionId = localStorage.getItem("sessionId");
@@ -8,8 +8,19 @@ export const saveResponses = (newResponses: { [key: string]: string }) => {
 
   const savedData = localStorage.getItem(`responses_${sessionId}_${userId}`);
   const existingData = savedData ? JSON.parse(savedData) : { responses: {} };
+  const updatedResponses = { ...existingData.responses };
 
-  const updatedResponses = { ...existingData.responses, ...newResponses };
+  Object.keys(newResponses).forEach((date) => {
+    if (updatedResponses[date]) {
+      // If the date already exists, append new time slots, avoiding duplicates
+      updatedResponses[date] = Array.from(
+        new Set([...updatedResponses[date], ...newResponses[date]])
+      );
+    } else {
+      // If the date doesn't exist, just add the new time slots
+      updatedResponses[date] = newResponses[date];
+    }
+  });
 
   const userData = {
     userId,
@@ -30,7 +41,7 @@ export const saveResponses = (newResponses: { [key: string]: string }) => {
 //   return savedData ? JSON.parse(savedData) : {};
 // };
 
-export const getResponses = (): { [key: string]: string } => {
+export const getResponses = (): { [key: string]: string[] } => {
   const userId = localStorage.getItem("userId");
   const sessionId = localStorage.getItem("sessionId"); // Retrieve sessionId from local storage
   const savedResponses = localStorage.getItem(

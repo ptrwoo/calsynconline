@@ -23,7 +23,14 @@ const Home = () => {
   const [sessionName, setSessionName] = useState<string | null>(null);
 
   const [availabilityData, setAvailabilityData] = useState<{
-    [date: string]: { count: number; names: string[] };
+    [date: string]: {
+      count: number;
+      timeslots: {
+        morning: string[];
+        afternoon: string[];
+        evening: string[];
+      };
+    };
   }>({});
   const [filteredDates, setFilteredDates] = useState<string[]>([]);
 
@@ -145,7 +152,7 @@ const Home = () => {
             >
               refresh results
             </button>
-            <Results sessionId={sessionId} trigger={pressed} />
+            <Results availabilityData={availabilityData} />
           </div>
         </div>
       ) : (

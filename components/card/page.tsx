@@ -8,12 +8,18 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
-  const [responses, setResponses] = useState<{ [key: string]: string }>({});
+  const [responses, setResponses] = useState<{ [key: string]: string[] }>({});
   const userId = localStorage.getItem("userId");
   const sessionId = localStorage.getItem("sessionId");
 
   const handleClick = (timeSlot: string, status: string) => {
-    const updatedResponses = { ...responses, [timeSlot]: status };
+    const existingSlots = responses[timeSlot] || [];
+
+    const updatedSlots = existingSlots.includes(status)
+      ? existingSlots.filter((slot) => slot !== status)
+      : [...existingSlots, status];
+
+    const updatedResponses = { ...responses, [timeSlot]: updatedSlots };
     setResponses(updatedResponses);
     saveResponses(updatedResponses);
 
@@ -33,25 +39,31 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
     <>
       <button
         className={`${
-          responses[timeSlot] === "morning" ? "bg-green-500" : "bg-gray-300"
+          responses[timeSlot]?.includes("morning")
+            ? "bg-green-500"
+            : "bg-gray-300"
         } px-4 py-2 m-1 text-white rounded`}
-        onClick={() => handleClick(timeSlot, "available")}
+        onClick={() => handleClick(timeSlot, "morning")}
       >
         Morning
       </button>
       <button
         className={`${
-          responses[timeSlot] === "afternoon" ? "bg-green-500" : "bg-gray-300"
+          responses[timeSlot]?.includes("afternoon")
+            ? "bg-green-500"
+            : "bg-gray-300"
         } px-4 py-2 m-1 text-white rounded`}
-        onClick={() => handleClick(timeSlot, "available")}
+        onClick={() => handleClick(timeSlot, "afternoon")}
       >
         Afternoon
       </button>
       <button
         className={`${
-          responses[timeSlot] === "evening" ? "bg-green-500" : "bg-gray-300"
+          responses[timeSlot]?.includes("evening")
+            ? "bg-green-500"
+            : "bg-gray-300"
         } px-4 py-2 m-1 text-white rounded`}
-        onClick={() => handleClick(timeSlot, "available")}
+        onClick={() => handleClick(timeSlot, "evening")}
       >
         Evening
       </button>

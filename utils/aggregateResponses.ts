@@ -1,6 +1,15 @@
+import { time } from "console";
+
 export const aggregateResponses = (currentSessionId: string) => {
   const allResponses: {
-    [date: string]: { count: number; names: string[] };
+    [date: string]: {
+      count: number;
+      timeslots: {
+        morning: string[];
+        afternoon: string[];
+        evening: string[];
+      };
+    };
   } = {};
 
   Object.keys(localStorage).forEach((key) => {
@@ -13,14 +22,29 @@ export const aggregateResponses = (currentSessionId: string) => {
 
       if (sessionId === currentSessionId) {
         Object.keys(userResponses).forEach((date) => {
-          if (userResponses[date] === "morning | afternoon | evening") {
-            if (!allResponses[date]) {
-              allResponses[date] = { count: 0, names: [] };
-            }
-
-            allResponses[date].count += 1;
-            allResponses[date].names.push(userName);
+          const timeSlots = userResponses[date]; // Array of time slots for this date
+          if (!allResponses[date]) {
+            allResponses[date] = {
+              count: 0,
+              timeslots: {
+                morning: [],
+                afternoon: [],
+                evening: [],
+              },
+            };
           }
+
+          timeSlots.forEach((slot: string) => {
+            if (slot === "morning") {
+              allResponses[date].timeslots.morning.push(userName);
+            } else if (slot === "afternoon") {
+              allResponses[date].timeslots.afternoon.push(userName);
+            } else if (slot === "evening") {
+              allResponses[date].timeslots.evening.push(userName);
+            }
+          });
+
+          allResponses[date].count += 1;
         });
       }
     }
