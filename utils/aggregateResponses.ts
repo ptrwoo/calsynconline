@@ -13,7 +13,7 @@ export const aggregateResponses = (currentSessionId: string) => {
 
       if (sessionId === currentSessionId) {
         Object.keys(userResponses).forEach((date) => {
-          if (userResponses[date] === "available") {
+          if (userResponses[date] === "morning | afternoon | evening") {
             if (!allResponses[date]) {
               allResponses[date] = { count: 0, names: [] };
             }

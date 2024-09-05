@@ -108,8 +108,8 @@ const Home = () => {
       {!sessionId ? (
         <SignUp onSignUp={handleSessionIn} />
       ) : userId && sessionId ? (
-        <div>
-          <h1 className="font-extrabold text-3xl">
+        <div className="font-mono">
+          <h1 className="font-extrabold text-3xl font-mono">
             {" "}
             {name}, free for "{sessionName}"?
           </h1>

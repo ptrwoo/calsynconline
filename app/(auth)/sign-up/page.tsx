@@ -28,7 +28,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp }) => {
     onSignUp(sessionId, savedName, startDate, endDate);
   };
   return (
-    <div>
+    <div className="font-mono">
       <h1 className="text-4xl font-extrabold border-l-orange-200 bg-orange-900 text-white flex justify-center">
         New Session?
       </h1>

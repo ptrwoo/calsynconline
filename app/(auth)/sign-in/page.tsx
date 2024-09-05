@@ -18,15 +18,17 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
   const sessionName = Object.values(getSessionName())[0];
 
   return (
-    <div>
-      <h1>Sign In for {sessionName}</h1>
+    <div className="font-mono">
+      <h1 className="text-xl">Sign In for {sessionName}</h1>
       <input
         type="text"
         placeholder="Enter your name"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button onClick={handleSignIn}>Sign In</button>
+      <button className="bg-orange-500" onClick={handleSignIn}>
+        Sign In
+      </button>
     </div>
   );
 };
