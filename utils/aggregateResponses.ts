@@ -45,8 +45,8 @@ export const aggregateResponses = (currentSessionId: string) => {
               allResponses[date].timeslots.evening[1].push(userName);
               allResponses[date].timeslots.evening[0] += 1;
             }
-            allResponses[date].count += 1;
           });
+          allResponses[date].count += 1;
         });
       }
     }

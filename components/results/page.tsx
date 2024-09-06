@@ -27,7 +27,7 @@ const Results: React.FC<ResultsProps> = ({ availabilityData }) => {
             ([date, { count, timeslots }]) => (
               <li key={date}>
                 <strong className="text-xl">
-                  {date} - {count} available:
+                  {date} - {count} users:
                 </strong>
                 {timeslots.morning.length > 0 && (
                   <div className="text-gray-500">
