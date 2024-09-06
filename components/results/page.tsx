@@ -9,9 +9,9 @@ interface ResultsProps {
     [date: string]: {
       count: number;
       timeslots: {
-        morning: string[];
-        afternoon: string[];
-        evening: string[];
+        morning: [count: number, string[]];
+        afternoon: [count: number, string[]];
+        evening: [count: number, string[]];
       };
     };
   };
@@ -26,34 +26,34 @@ const Results: React.FC<ResultsProps> = ({ availabilityData }) => {
           {Object.entries(availabilityData).map(
             ([date, { count, timeslots }]) => (
               <li key={date}>
-                <strong>
+                <strong className="text-xl">
                   {date} - {count} available:
                 </strong>
                 {timeslots.morning.length > 0 && (
-                  <div>
-                    <strong>Morning:</strong>
+                  <div className="text-gray-500">
+                    <strong>Morning({timeslots.morning[0]})</strong>
                     <ul>
-                      {timeslots.morning.map((name, index) => (
+                      {timeslots.morning[1].map((name, index) => (
                         <li key={index}>- {name}</li>
                       ))}
                     </ul>
                   </div>
                 )}
                 {timeslots.afternoon.length > 0 && (
-                  <div>
-                    <strong>Afternoon:</strong>
+                  <div className="text-gray-500">
+                    <strong>Afternoon({timeslots.afternoon[0]}) </strong>
                     <ul>
-                      {timeslots.afternoon.map((name, index) => (
+                      {timeslots.afternoon[1].map((name, index) => (
                         <li key={index}>- {name}</li>
                       ))}
                     </ul>
                   </div>
                 )}
                 {timeslots.evening.length > 0 && (
-                  <div>
-                    <strong>Evening:</strong>
+                  <div className="text-gray-500">
+                    <strong>Evening({timeslots.evening[0]}) </strong>
                     <ul>
-                      {timeslots.evening.map((name, index) => (
+                      {timeslots.evening[1].map((name, index) => (
                         <li key={index}>- {name}</li>
                       ))}
                     </ul>

@@ -5,9 +5,9 @@ export const aggregateResponses = (currentSessionId: string) => {
     [date: string]: {
       count: number;
       timeslots: {
-        morning: string[];
-        afternoon: string[];
-        evening: string[];
+        morning: [count: number, string[]];
+        afternoon: [count: number, string[]];
+        evening: [count: number, string[]];
       };
     };
   } = {};
@@ -27,24 +27,26 @@ export const aggregateResponses = (currentSessionId: string) => {
             allResponses[date] = {
               count: 0,
               timeslots: {
-                morning: [],
-                afternoon: [],
-                evening: [],
+                morning: [0, []],
+                afternoon: [0, []],
+                evening: [0, []],
               },
             };
           }
 
           timeSlots.forEach((slot: string) => {
             if (slot === "morning") {
-              allResponses[date].timeslots.morning.push(userName);
+              allResponses[date].timeslots.morning[1].push(userName);
+              allResponses[date].timeslots.morning[0] += 1;
             } else if (slot === "afternoon") {
-              allResponses[date].timeslots.afternoon.push(userName);
+              allResponses[date].timeslots.afternoon[1].push(userName);
+              allResponses[date].timeslots.afternoon[0] += 1;
             } else if (slot === "evening") {
-              allResponses[date].timeslots.evening.push(userName);
+              allResponses[date].timeslots.evening[1].push(userName);
+              allResponses[date].timeslots.evening[0] += 1;
             }
+            allResponses[date].count += 1;
           });
-
-          allResponses[date].count += 1;
         });
       }
     }

@@ -26,9 +26,9 @@ const Home = () => {
     [date: string]: {
       count: number;
       timeslots: {
-        morning: string[];
-        afternoon: string[];
-        evening: string[];
+        morning: [count: number, string[]];
+        afternoon: [count: number, string[]];
+        evening: [count: number, string[]];
       };
     };
   }>({});
@@ -146,12 +146,6 @@ const Home = () => {
           <br />
 
           <div>
-            <button
-              onClick={handleResultButton}
-              className="border-solid text-md border-4 bg-yellow-200 font-semibold text-black rounded-2xl gap-3"
-            >
-              refresh results
-            </button>
             <Results availabilityData={availabilityData} />
           </div>
         </div>
