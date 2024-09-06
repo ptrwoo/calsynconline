@@ -10,14 +10,12 @@ export const saveResponses = (newResponses: { [key: string]: string[] }) => {
   const existingData = savedData ? JSON.parse(savedData) : { responses: {} };
   const updatedResponses = { ...existingData.responses };
 
+  //creating a checker condition for same userName = update modify response rather than push new one again
+
   Object.keys(newResponses).forEach((date) => {
-    if (updatedResponses[date]) {
-      // If the date already exists, append new time slots, avoiding duplicates
-      updatedResponses[date] = Array.from(
-        new Set([...updatedResponses[date], ...newResponses[date]])
-      );
+    if (newResponses[date].length === 0) {
+      delete updatedResponses[date];
     } else {
-      // If the date doesn't exist, just add the new time slots
       updatedResponses[date] = newResponses[date];
     }
   });

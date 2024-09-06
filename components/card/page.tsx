@@ -1,5 +1,6 @@
 "use client";
 import { getResponses, saveResponses } from "@/utils/api";
+import { getCurrentUser, getSessionId } from "@/utils/authService";
 import React, { useEffect, useState } from "react";
 
 interface CardProps {
@@ -9,8 +10,10 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
   const [responses, setResponses] = useState<{ [key: string]: string[] }>({});
-  const userId = localStorage.getItem("userId");
-  const sessionId = localStorage.getItem("sessionId");
+  const [userId, setUserId] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  // const userId = localStorage.getItem("userId");
+  // const sessionId = localStorage.getItem("sessionId");
 
   const handleClick = (timeSlot: string, status: string) => {
     const existingSlots = responses[timeSlot] || [];
@@ -25,6 +28,14 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
 
     onResponseChange();
   };
+
+  useEffect(() => {
+    const userId = getCurrentUser().userId;
+    const sessionId = getSessionId().sessionId;
+
+    setUserId(userId);
+    setSessionId(sessionId);
+  }, []);
 
   useEffect(() => {
     if (userId && sessionId) {
@@ -67,23 +78,6 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
       >
         Evening
       </button>
-
-      {/* <button
-        className={`${
-          responses[timeSlot] === "available" ? "bg-green-500" : "bg-gray-300"
-        } px-4 py-2 m-1 text-white rounded`}
-        onClick={() => handleClick(timeSlot, "available")}
-      >
-        Available
-      </button> */}
-      {/* <button
-        className={`${
-          responses[timeSlot] === "unavailable" ? "bg-red-500" : "bg-gray-300"
-        } px-4 py-2 m-1 text-white rounded`}
-        onClick={() => handleClick(timeSlot, "unavailable")}
-      >
-        rather not
-      </button> */}
     </>
   );
 
@@ -93,17 +87,7 @@ const Card: React.FC<CardProps> = ({ cardDate, onResponseChange }) => {
         {" "}
         {cardDate}{" "}
       </h2>
-      {/* <p className="text-xl font-extrabold text-gray-400">Morning</p> */}
       {renderButton(cardDate)}
-
-      {/* <p className="text-xl font-extrabold text-gray-400">Morning</p>
-      {renderButton(cardDate + " morning")}
-
-      <p className="text-xl font-extrabold  text-gray-400">Afternoon</p>
-      {renderButton(cardDate + " Afternoon")}
-
-      <p className="text-xl font-extrabold  text-gray-400">Evening</p>
-      {renderButton(cardDate + " evening")} */}
     </div>
   );
 };
