@@ -4,23 +4,49 @@
 // import React, { useEffect, useState } from "react";
 // import React from "react";
 
+import { aggregateResponses } from "@/utils/aggregateResponses";
+import { getSessionName } from "@/utils/authService";
+import { useEffect, useState } from "react";
+
 interface ResultsProps {
-  availabilityData: {
-    [date: string]: {
-      count: number;
-      timeslots: {
-        morning: [count: number, string[]];
-        afternoon: [count: number, string[]];
-        evening: [count: number, string[]];
-      };
+  sessionId: string;
+  trigger: boolean;
+}
+
+interface AvailabilityData {
+  [date: string]: {
+    count: number;
+    timeslots: {
+      morning: [count: number, string[]];
+      afternoon: [count: number, string[]];
+      evening: [count: number, string[]];
     };
   };
 }
 
-const Results: React.FC<ResultsProps> = ({ availabilityData }) => {
+const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
+  const [sessionName, setSessionName] = useState<string | null>(null);
+  const [availabilityData, setAvailabilityData] = useState<AvailabilityData>(
+    {}
+  );
+
+  useEffect(() => {
+    const session = getSessionName().sessionName;
+    if (session) {
+      setSessionName(session);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (sessionId) {
+      const aggregateData = aggregateResponses(sessionId);
+      setAvailabilityData(aggregateData);
+    }
+  }, [sessionId, trigger]);
+
   return (
     <div>
-      <h3>Availability Results</h3>
+      <h3>Availability Results for {sessionName}</h3>
       {Object.keys(availabilityData).length > 0 ? (
         <ul>
           {Object.entries(availabilityData).map(

@@ -33,8 +33,9 @@ const Home = () => {
     };
   }>({});
   const [filteredDates, setFilteredDates] = useState<string[]>([]);
+  const [trigger, setTrigger] = useState(false);
 
-  const [pressed, setPressed] = useState<boolean>(false);
+  // const [pressed, setPressed] = useState<boolean>(false);
 
   useEffect(() => {
     const { userId, name } = getCurrentUser();
@@ -94,6 +95,8 @@ const Home = () => {
       const aggregateData = aggregateResponses(sessionId);
       setAvailabilityData(aggregateData);
     }
+
+    setTrigger(!trigger);
   };
 
   const cardCollection = filteredDates.map((x) => {
@@ -102,9 +105,9 @@ const Home = () => {
     );
   });
 
-  const handleResultButton = () => {
-    setPressed(!pressed);
-  };
+  // const handleResultButton = () => {
+  //   setPressed(!pressed);
+  // };
 
   // const handleSessionChoose = () => {
   //   <SessionPicker onSelectSession={sessionId} />;
@@ -146,7 +149,7 @@ const Home = () => {
           <br />
 
           <div>
-            <Results availabilityData={availabilityData} />
+            <Results sessionId={sessionId} trigger={trigger} />
           </div>
         </div>
       ) : (
