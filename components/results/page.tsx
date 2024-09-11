@@ -47,7 +47,7 @@ const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
   return (
     <div>
       <h3>Availability Results for {sessionName}</h3>
-      {Object.keys(availabilityData).length > 0 ? (
+      {Object?.keys(availabilityData).length > 0 ? (
         <ul>
           {Object.entries(availabilityData).map(
             ([date, { count, timeslots }]) => (
@@ -55,7 +55,7 @@ const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
                 <strong className="text-xl">
                   {date} - {count} users:
                 </strong>
-                {timeslots.morning.length > 0 && (
+                {timeslots?.morning.length > 0 && (
                   <div className="text-gray-500">
                     <strong>Morning({timeslots.morning[0]})</strong>
                     <ul>
@@ -65,7 +65,7 @@ const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
                     </ul>
                   </div>
                 )}
-                {timeslots.afternoon.length > 0 && (
+                {timeslots?.afternoon.length > 0 && (
                   <div className="text-gray-500">
                     <strong>Afternoon({timeslots.afternoon[0]}) </strong>
                     <ul>
@@ -75,7 +75,7 @@ const Results: React.FC<ResultsProps> = ({ sessionId, trigger }) => {
                     </ul>
                   </div>
                 )}
-                {timeslots.evening.length > 0 && (
+                {timeslots?.evening.length > 0 && (
                   <div className="text-gray-500">
                     <strong>Evening({timeslots.evening[0]}) </strong>
                     <ul>
