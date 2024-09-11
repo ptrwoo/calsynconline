@@ -23,6 +23,8 @@ export const aggregateResponses = (currentSessionId: string) => {
       if (sessionId === currentSessionId) {
         Object.keys(userResponses).forEach((date) => {
           const timeSlots = userResponses[date]; // Array of time slots for this date
+          console.log(timeSlots);
+
           if (!allResponses[date]) {
             allResponses[date] = {
               count: 0,
@@ -34,7 +36,7 @@ export const aggregateResponses = (currentSessionId: string) => {
             };
           }
 
-          timeSlots.forEach((slot: string) => {
+          timeSlots?.forEach((slot: string) => {
             if (slot === "morning") {
               allResponses[date].timeslots.morning[1].push(userName);
               allResponses[date].timeslots.morning[0] += 1;

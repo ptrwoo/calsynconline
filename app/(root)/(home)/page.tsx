@@ -85,9 +85,9 @@ const Home = () => {
 
   const handleSessionOut = () => {
     sessionOut();
+    handleSignout();
     setSessionId(null);
     setSessionName(null);
-    handleSignout();
   };
 
   const handleResponseChange = () => {
