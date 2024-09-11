@@ -8,10 +8,12 @@ import {
   getCurrentUser,
   getSessionId,
   sessionOut,
+  getSessionName,
 } from "@/utils/authService";
 import { aggregateResponses } from "@/utils/aggregateResponses";
 import { getSessionDates } from "@/utils/datehelper";
 import SignUp from "@/app/(auth)/sign-up/page";
+import SessionPicker from "@/app/(auth)/sessionPick/page";
 
 const Home = () => {
   const [userId, setUserId] = useState<string | null>(null);
@@ -21,38 +23,56 @@ const Home = () => {
   const [sessionName, setSessionName] = useState<string | null>(null);
 
   const [availabilityData, setAvailabilityData] = useState<{
-    [date: string]: { count: number; names: string[] };
+    [date: string]: {
+      count: number;
+      timeslots: {
+        morning: [count: number, string[]];
+        afternoon: [count: number, string[]];
+        evening: [count: number, string[]];
+      };
+    };
   }>({});
   const [filteredDates, setFilteredDates] = useState<string[]>([]);
+  const [trigger, setTrigger] = useState(false);
 
-  const sessionDates = getSessionDates();
-  const startDate = sessionDates[0];
-  const endDate = sessionDates[1];
+  // const [pressed, setPressed] = useState<boolean>(false);
 
   useEffect(() => {
     const { userId, name } = getCurrentUser();
-    const { sessionId, sessionName } = getSessionId();
-    if (userId && name) {
-      setUserId(userId);
-      setName(name);
-    }
-    if (sessionId && sessionName) {
-      setSessionId(sessionId);
-      setSessionName(sessionName);
-    }
+    const { sessionId } = getSessionId();
+    const { sessionName } = getSessionName();
+    if (userId) setUserId(userId);
+    if (name) setName(name);
+    if (sessionId) setSessionId(sessionId);
+    if (sessionName) setSessionName(sessionName);
+
+    // if (sessionId) {
+    //   const dates = getSessionDates();
+    //   console.log(dates + "these are dates");
+    //   setFilteredDates(dates);
+    // }
   }, []);
 
   useEffect(() => {
-    const dates = getSessionDates();
-    setFilteredDates(dates);
-  }, [startDate, endDate]);
+    if (sessionId) {
+      const dates = getSessionDates();
+      setFilteredDates(dates);
+    }
+  }, [sessionId]);
+
+  // useEffect(() => {
+  //   if (sessionId) {
+  //     const aggregateData = aggregateResponses(sessionId);
+  //     setAvailabilityData(aggregateData);
+  //   }
+  // }, [sessionId]);
 
   const handleSignIn = (userId: string, name: string) => {
     setUserId(userId);
     setName(name);
   };
 
-  const handleSessionIn = (sessionId: string, sessionName: string) => {
+  const handleSessionIn = (sessionId: string | null, sessionName: string) => {
     setSessionId(sessionId);
     setSessionName(sessionName);
   };
@@ -71,8 +91,12 @@ const Home = () => {
   };
 
   const handleResponseChange = () => {
-    const aggregateData = aggregateResponses();
-    setAvailabilityData(aggregateData);
+    if (sessionId) {
+      const aggregateData = aggregateResponses(sessionId);
+      setAvailabilityData(aggregateData);
+    }
+
+    setTrigger(!trigger);
   };
 
   const cardCollection = filteredDates.map((x) => {
@@ -81,21 +105,51 @@ const Home = () => {
     );
   });
 
+  // const handleResultButton = () => {
+  //   setPressed(!pressed);
+  // };
+
+  // const handleSessionChoose = () => {
+  //   <SessionPicker onSelectSession={sessionId} />;
+  // };
+
   return (
     <>
       {!sessionId ? (
         <SignUp onSignUp={handleSessionIn} />
       ) : userId && sessionId ? (
-        <div>
-          <h1> r u free? </h1>
+        <div className="font-mono">
+          <h1 className="font-extrabold text-3xl font-mono">
+            {" "}
+            {name}, free for "{sessionName}"?
+          </h1>
           {cardCollection}
 
           <br />
-          <button onClick={handleSignout}>Sign Out</button>
-          <button onClick={handleSessionOut}>Exit Session</button>
+          <button
+            onClick={handleSignout}
+            className="border-solid text-xl border-4 bg-slate-800 font-semibold text-white rounded-2xl gap-3"
+          >
+            Sign Out
+          </button>
+          <button
+            onClick={handleSessionOut}
+            className="border-solid text-xl border-4 bg-slate-500 font-semibold text-white rounded-2xl gap-3"
+          >
+            Exit Session
+          </button>
+          <br />
+          {/* <button
+            onClick={handleSessionChoose}
+            className="border-solid text-md border-4 bg-orange-200 font-bold text-white rounded-2xl gap-3"
+          >
+            Choose Session
+          </button> */}
+          <br />
+          <br />
 
           <div>
-            <Results availabilityData={availabilityData} />
+            <Results sessionId={sessionId} trigger={trigger} />
           </div>
         </div>
       ) : (

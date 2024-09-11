@@ -5,9 +5,9 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <body>
-        NavBar
+        {/* NavBar */}
         {children}
-        Footer
+        {/* Footer */}
       </body>
     </html>
   );

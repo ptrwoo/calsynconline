@@ -34,25 +34,38 @@ export const sessionOut = () => {
 };
 
 export const sessionIn = (
-  sessionName: string,
-): { sessionId: string; sessionName: string } => {
-  let sessionId = localStorage.getItem("sessionId");
-
-  if (!sessionId) {
-    sessionId = uuidv4();
-    localStorage.setItem("sessionId", sessionId);
-  }
-
+  sessionName: string
+): { sessionId: string | null; sessionName: string } => {
+  const sessionId = uuidv4();
+  localStorage.setItem("sessionId", sessionId);
   localStorage.setItem("sessionName", sessionName);
+
+  const keyPair = [{ [sessionId]: sessionName }];
+  localStorage.setItem("sessionKeys", JSON.stringify(keyPair));
 
   return { sessionId, sessionName };
 };
 
+export const sessionRetrieve = (): {
+  sessionId: string;
+  sessionName: string;
+}[] => {
+  const sessionKeys = JSON.parse(localStorage.getItem("sessionKeys") || "[]");
+  return sessionKeys; // Return the array of session keys and session names
+};
+
 export const getSessionId = (): {
   sessionId: string | null;
-  sessionName: string | null;
 } => {
   const sessionId = localStorage.getItem("sessionId");
+
+  return { sessionId };
+};
+
+export const getSessionName = (): {
+  sessionName: string | null;
+} => {
   const sessionName = localStorage.getItem("sessionName");
-  return { sessionId, sessionName };
+
+  return { sessionName };
 };
