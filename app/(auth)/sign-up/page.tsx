@@ -5,10 +5,10 @@ import { saveSessionDates } from "@/utils/datehelper";
 
 interface SignUpProps {
   onSignUp: (
-    sessionId: string,
+    sessionId: string | null,
     sessionName: string,
     startDate: string,
-    endDate: string,
+    endDate: string
   ) => void;
 }
 
@@ -28,29 +28,39 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp }) => {
     onSignUp(sessionId, savedName, startDate, endDate);
   };
   return (
-    <div>
-      <h1>New Session?</h1>
-      <input
-        type="text"
-        placeholder="Enter name of Session"
-        value={sessionName}
-        onChange={(e) => setSessionName(e.target.value)}
-      />
-      <br />
-      <input
-        type="date"
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-      />
-      <input
-        type="date"
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-      />
-      <br /> <br />
-      <button onClick={handleSignIn}>Create Session</button>
-      <br />
-      <br />
+    <div className="font-mono flex-col flex justify-center place-content-center ">
+      <h1 className="text-4xl font-extrabold border-l-orange-200 bg-orange-900 text-white ">
+        New Session?
+      </h1>
+      <div className="">
+        <input
+          className=""
+          type="text"
+          placeholder="Enter name of Session"
+          value={sessionName}
+          onChange={(e) => setSessionName(e.target.value)}
+        />
+        <br />
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+        <br /> <br />
+        <button
+          onClick={handleSignIn}
+          className="px-4 py-2 m-1 bg-orange-400 text-white rounded"
+        >
+          Create Session
+        </button>
+        <br />
+        <br />
+      </div>
     </div>
   );
 };
