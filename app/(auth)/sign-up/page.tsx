@@ -1,65 +1,28 @@
 "use client";
+import { signIn } from "@/utils/authService";
 import React, { useState } from "react";
-import { sessionIn } from "@/utils/authService";
-import { saveSessionDates } from "@/utils/datehelper";
 
-interface SignUpProps {
-  onSignUp: (
-    sessionId: string | null,
-    sessionName: string,
-    startDate: string,
-    endDate: string
-  ) => void;
-}
+const SignUp = () => {
+  const [name, setName] = useState("");
 
-const SignUp: React.FC<SignUpProps> = ({ onSignUp }) => {
-  const today = new Date();
-  const formattedToday = today.toISOString().split("T")[0];
-
-  const [sessionName, setSessionName] = useState("");
-  const [startDate, setStartDate] = useState<string>(formattedToday);
-  const [endDate, setEndDate] = useState<string>(formattedToday);
-
-  const handleSignIn = () => {
-    if (!sessionName) return;
-
-    const { sessionId, sessionName: savedName } = sessionIn(sessionName);
-    saveSessionDates(startDate, endDate);
-    onSignUp(sessionId, savedName, startDate, endDate);
+  const handleSignUp = () => {
+    if (!name) {
+      return;
+    }
+    const { userId, name: savedName } = signIn(name);
+    setName(savedName);
   };
+
   return (
-    <div className="font-mono flex-col flex justify-center place-content-center ">
-      <h1 className="text-4xl font-extrabold border-l-orange-200 bg-orange-900 text-white ">
-        New Session?
-      </h1>
-      <div className="">
+    <div>
+      <div>
         <input
-          className=""
           type="text"
-          placeholder="Enter name of Session"
-          value={sessionName}
-          onChange={(e) => setSessionName(e.target.value)}
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
-        <br />
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-        <br /> <br />
-        <button
-          onClick={handleSignIn}
-          className="px-4 py-2 m-1 bg-orange-400 text-white rounded"
-        >
-          Create Session
-        </button>
-        <br />
-        <br />
+        <button onClick={handleSignUp}>sign up</button>
       </div>
     </div>
   );
